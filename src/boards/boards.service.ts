@@ -27,4 +27,9 @@ export class BoardsService {
     this.boards.filter((board: Board) => board.id !== id);
     return id;
   }
+  updateBoardStatus(id: string, status: BoardStatus): Board {
+    const board = this.getOneBoard(id);
+    board.status = status;
+    return board;
+  }
 }
