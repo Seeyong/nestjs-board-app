@@ -3,6 +3,7 @@ import { BoardRepository } from './boards.repository';
 import { Board } from './boards.entity';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { DeleteResult } from 'typeorm';
+import { BoardStatus } from './boards.model';
 
 @Injectable()
 export class BoardsService {
@@ -27,12 +28,16 @@ export class BoardsService {
     }
   }
 
-  // getAllBoards(): Board[] {
-  //  return this.boards;
-  //}
-  //updateBoardStatus(id: string, status: BoardStatus): Board {
-  // const board = this.getOneBoard(id);
-  // board.status = status;
-  //  return board;
-  //}
+  async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
+    const board = await this.getBoardById(id);
+    board.status = status;
+    await this.boardRepository.save(board);
+
+    return board;
+  }
+
+  async getAllBoards(): Promise<Board[]> {
+    const boards: Board[] = await this.boardRepository.find();
+    return boards;
+  }
 }
