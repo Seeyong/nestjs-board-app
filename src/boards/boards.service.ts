@@ -7,10 +7,10 @@ import { CreateBoardDto } from './dto/create-board.dto';
 export class BoardsService {
   private boards: Board[] = [];
 
-  getAllBoards() {
+  getAllBoards(): Board[] {
     return this.boards;
   }
-  createBoard(createBoardDto: CreateBoardDto) {
+  createBoard(createBoardDto: CreateBoardDto): Board {
     const board: Board = {
       id: uuid(),
       status: BoardStatus.PUBLIC,
@@ -19,12 +19,14 @@ export class BoardsService {
     this.boards.push(board);
     return board;
   }
-  getOneBoard(id: string) {
-    const theBoard: Board = this.boards.find((board: Board) => board.id === id);
+  getOneBoard(id: string): Board {
+    const theBoard: Board = this.boards.find(
+      (board: Board): boolean => board.id === id,
+    );
     return theBoard;
   }
-  deleteOneBoard(id: string) {
-    this.boards.filter((board: Board) => board.id !== id);
+  deleteOneBoard(id: string): string {
+    this.boards.filter((board: Board): boolean => board.id !== id);
     return id;
   }
   updateBoardStatus(id: string, status: BoardStatus): Board {
