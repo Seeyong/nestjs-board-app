@@ -2,7 +2,10 @@ import { BadRequestException, PipeTransform } from '@nestjs/common';
 import { BoardStatus } from '../boards.model';
 
 export class BoardStatusValidationPipe implements PipeTransform {
-  readonly StatusOptions = [BoardStatus.PUBLIC, BoardStatus.PRIVATE];
+  readonly StatusOptions: BoardStatus[] = [
+    BoardStatus.PUBLIC,
+    BoardStatus.PRIVATE,
+  ];
   transform(value: any) {
     value = value.toUpperCase();
 
@@ -12,8 +15,8 @@ export class BoardStatusValidationPipe implements PipeTransform {
 
     return value;
   }
-  private isStatusValid(status: any) {
-    const index = this.StatusOptions.indexOf(status);
+  private isStatusValid(status: any): boolean {
+    const index: number = this.StatusOptions.indexOf(status);
     return index !== -1;
   }
 }
