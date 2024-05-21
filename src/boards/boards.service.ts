@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BoardRepository } from './boards.repository';
 import { Board } from './boards.entity';
 import { CreateBoardDto } from './dto/create-board.dto';
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, SelectQueryBuilder } from 'typeorm';
 import { BoardStatus } from './boards.model';
 import { User } from '../auth/user.entity';
 
@@ -37,8 +37,11 @@ export class BoardsService {
     return board;
   }
 
-  async getAllBoards(): Promise<Board[]> {
-    const boards: Board[] = await this.boardRepository.find();
+  async getAllBoards(user: User): Promise<Board[]> {
+    const query: SelectQueryBuilder<Board> =
+      this.boardRepository.createQueryBuilder('board');
+    query.where('board.userId = :userId', { userId: user.id });
+    const boards: Board[] = await query.getMany();
     return boards;
   }
 }
